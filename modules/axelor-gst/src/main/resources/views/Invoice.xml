@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<object-views xmlns="http://axelor.com/xml/ns/object-views"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://axelor.com/xml/ns/object-views http://axelor.com/xml/ns/object-views/object-views_5.4.xsd">
+
+  <form name="invoice-form" title="Invoice" model="com.axelor.apps.account.db.Invoice"
+    extension="true" id="invoice-netcalculation-form">
+    <extend target="//panel-related[@name='invoiceLineListPanel']">
+      <insert position="after">
+        <panel hideIf="partner == null" if-module="axelor-gst" if="__config__.app.isApp('gst')">
+          <field name="netCgst" title="Net Cgst" readonly="true"/>
+          <field name="netSgst" title="Net Sgst" readonly="true"/>
+          <field name="netIgst" title="Net Igst" readonly="true"/>
+        </panel>
+      </insert>
+    </extend>
+    <extend target="//panel[@name='invoicingInfoPanel']/field[@name='partner']">
+      <attribute name="onChange"
+        value="action-group-account-invoice-partner-onchange,action-method-invoice-address-str,action-method-gst-invoice-partner-onchange"/>
+    </extend>
+  </form>
+
+  <action-method name="action-method-gst-invoice-partner-onchange">
+    <call class="com.axelor.apps.gst.web.InvoiceGstController" method="calculateallGsts"/>
+  </action-method>
+
+</object-views>

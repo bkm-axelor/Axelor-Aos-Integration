@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<object-views xmlns="http://axelor.com/xml/ns/object-views" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://axelor.com/xml/ns/object-views http://axelor.com/xml/ns/object-views/object-views_5.4.xsd">
+
+	<form name="partner-form" title="Partner" model="com.axelor.apps.base.db.Partner" width="large" extension="true" id="partner-gst-form">
+		<extend target="//field[@name='department']">
+			<insert position="after">
+				<field name="gstIn" title="GstIn" min="15" max="15" if-module="axelor-gst" if="__config__.app.isApp('gst')" />
+			</insert>
+		</extend>
+	</form>
+
+</object-views>
