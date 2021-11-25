@@ -22,8 +22,9 @@ public class InvoiceGstController {
 		Invoice invoice = request.getContext().asType(Invoice.class);
 
 		if (invoice.getPartner() != null && Beans.get(AppSupplychainService.class).isApp("gst")
-				&& invoice.getInvoiceLineList() != null && !invoice.getInvoiceLineList().isEmpty()) {
-			
+				&& invoice.getInvoiceLineList() != null && !invoice.getInvoiceLineList().isEmpty()
+				&& invoice.getCompany().getAddress().getState() != null && invoice.getAddress().getState() != null) {
+
 			List<InvoiceLine> invoiceLineList = invoice.getInvoiceLineList();
 
 			for (InvoiceLine invoiceLine : invoiceLineList) {
@@ -55,9 +56,6 @@ public class InvoiceGstController {
 			response.setValue("netIgst", compute.getNetIgst());
 
 		} else {
-			response.setValue("cgst", BigDecimal.ZERO);
-			response.setValue("sgst", BigDecimal.ZERO);
-			response.setValue("igst", BigDecimal.ZERO);
 			response.setValue("netCgst", BigDecimal.ZERO);
 			response.setValue("netSgst", BigDecimal.ZERO);
 			response.setValue("netIgst", BigDecimal.ZERO);

@@ -21,83 +21,64 @@ import com.axelor.inject.Beans;
 import com.google.inject.Inject;
 import java.math.BigDecimal;
 
-public class InvoiceGstServiceImpl extends InvoiceServiceManagementImpl
-    implements InvoiceGstService {
+public class InvoiceGstServiceImpl extends InvoiceServiceManagementImpl implements InvoiceGstService {
 
-  @Inject
-  public InvoiceGstServiceImpl(
-      ValidateFactory validateFactory,
-      VentilateFactory ventilateFactory,
-      CancelFactory cancelFactory,
-      AlarmEngineService<Invoice> alarmEngineService,
-      InvoiceRepository invoiceRepo,
-      AppAccountService appAccountService,
-      PartnerService partnerService,
-      InvoiceLineService invoiceLineService,
-      AccountConfigService accountConfigService,
-      MoveToolService moveToolService,
-      InvoiceLineRepository invoiceLineRepo,
-      InvoiceEstimatedPaymentService invoiceEstimatedPaymentService) {
-    super(
-        validateFactory,
-        ventilateFactory,
-        cancelFactory,
-        alarmEngineService,
-        invoiceRepo,
-        appAccountService,
-        partnerService,
-        invoiceLineService,
-        accountConfigService,
-        moveToolService,
-        invoiceLineRepo,
-        invoiceEstimatedPaymentService);
-  }
+	@Inject
+	public InvoiceGstServiceImpl(ValidateFactory validateFactory, VentilateFactory ventilateFactory,
+			CancelFactory cancelFactory, AlarmEngineService<Invoice> alarmEngineService, InvoiceRepository invoiceRepo,
+			AppAccountService appAccountService, PartnerService partnerService, InvoiceLineService invoiceLineService,
+			AccountConfigService accountConfigService, MoveToolService moveToolService,
+			InvoiceLineRepository invoiceLineRepo, InvoiceEstimatedPaymentService invoiceEstimatedPaymentService) {
+		super(validateFactory, ventilateFactory, cancelFactory, alarmEngineService, invoiceRepo, appAccountService,
+				partnerService, invoiceLineService, accountConfigService, moveToolService, invoiceLineRepo,
+				invoiceEstimatedPaymentService);
+	}
 
-  @Override
-  public BigDecimal getIgst(InvoiceLine invoiceLine) {
-    BigDecimal igst = invoiceLine.getIgst();
-    if (igst != null) {
-      return invoiceLine.getIgst();
-    } else {
-      return BigDecimal.ZERO;
-    }
-  }
+	@Override
+	public BigDecimal getIgst(InvoiceLine invoiceLine) {
+		BigDecimal igst = invoiceLine.getIgst();
+		if (igst != null) {
+			return invoiceLine.getIgst();
+		} else {
+			return BigDecimal.ZERO;
+		}
+	}
 
-  @Override
-  public BigDecimal getCgst(InvoiceLine invoiceLine) {
-    BigDecimal cgst = invoiceLine.getCgst();
-    if (cgst != null) {
-      return cgst;
-    } else {
-      return BigDecimal.ZERO;
-    }
-  }
+	@Override
+	public BigDecimal getCgst(InvoiceLine invoiceLine) {
+		BigDecimal cgst = invoiceLine.getCgst();
+		if (cgst != null) {
+			return cgst;
+		} else {
+			return BigDecimal.ZERO;
+		}
+	}
 
-  @Override
-  public Invoice compute(Invoice invoice) throws AxelorException {
-    Invoice compute = super.compute(invoice);
-    BigDecimal netIgst = new BigDecimal(0.00);
-    BigDecimal netCgst = new BigDecimal(0.00);
+	@Override
+	public Invoice compute(Invoice invoice) throws AxelorException {
+		Invoice computedInvoice = super.compute(invoice);
+		BigDecimal netIgst = new BigDecimal(0.00);
+		BigDecimal netCgst = new BigDecimal(0.00);
 
-    if (!Beans.get(AppSupplychainService.class).isApp("gst")) {
-      return compute;
-    } else {
-      if (!invoice.getInvoiceLineList().isEmpty()) {
-        for (InvoiceLine invoiceLine : invoice.getInvoiceLineList()) {
-          netIgst = netIgst.add(getIgst(invoiceLine));
-          netCgst = netCgst.add(getCgst(invoiceLine));
-        }
-        compute.setNetCgst(netCgst);
-        compute.setNetIgst(netIgst);
-        compute.setNetSgst(netCgst);
+		if (!Beans.get(AppSupplychainService.class).isApp("gst")) {
+			return computedInvoice;
+		} else {
+			if (!invoice.getInvoiceLineList().isEmpty()) {
+				for (InvoiceLine invoiceLine : invoice.getInvoiceLineList()) {
+					netIgst = netIgst.add(getIgst(invoiceLine));
+					netCgst = netCgst.add(getCgst(invoiceLine));
+				}
+				computedInvoice.setNetCgst(netCgst);
+				computedInvoice.setNetIgst(netIgst);
+				computedInvoice.setNetSgst(netCgst);
 
-        return compute;
-      } else {
-        compute.setNetCgst(BigDecimal.ZERO);
-        compute.setNetIgst(BigDecimal.ZERO);
-        compute.setNetSgst(BigDecimal.ZERO);
-        return compute;
-      }
-    }
-  }
+				return computedInvoice;
+			} else {
+				computedInvoice.setNetCgst(BigDecimal.ZERO);
+				computedInvoice.setNetIgst(BigDecimal.ZERO);
+				computedInvoice.setNetSgst(BigDecimal.ZERO);
+				return computedInvoice;
+			}
+		}
+	}
 }
