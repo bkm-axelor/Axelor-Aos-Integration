@@ -108,7 +108,7 @@ public class InvoiceLineGstServiceImpl extends InvoiceLineProjectServiceImpl imp
 		if (invoiceLine.getProduct().getGstRate().compareTo(BigDecimal.ZERO) > 0
 				&& Beans.get(AppSupplychainService.class).isApp("gst")) {
 		
-			TaxLine fetchOne = taxLineRepository.all().filter("self.value = ?", invoiceLine.getProduct().getGstRate().divide(BigDecimal.valueOf(100))).fetchOne();
+			TaxLine fetchOne = taxLineRepository.all().filter("self.tax.code = 'GS_T' and self.value = ?", invoiceLine.getProduct().getGstRate().divide(BigDecimal.valueOf(100))).fetchOne();
 			
 			return fetchOne;
 		} else {
