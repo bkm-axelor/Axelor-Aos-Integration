@@ -56,25 +56,13 @@ public class InvoiceLineGstServiceImpl extends InvoiceLineProjectServiceImpl imp
 	}
 
 	public BigDecimal calculateCGst(InvoiceLine invoiceLine, BigDecimal calculateGst) {
-
-		BigDecimal qnty = invoiceLine.getQty();
-		BigDecimal price = invoiceLine.getProduct().getSalePrice();
-		BigDecimal multi = qnty.multiply(price);
-		BigDecimal multipl = multi.multiply(calculateGst);
-		BigDecimal res = multipl.divide(new BigDecimal(2.00));
-
-		return res;
+		return ((invoiceLine.getQty()).multiply(invoiceLine.getProduct().getSalePrice()).multiply(calculateGst)).divide(new BigDecimal(2.00));
 	}
 
 	public BigDecimal calculateIGst(InvoiceLine invoiceLine, BigDecimal calculateGst) {
-		BigDecimal qnty = invoiceLine.getQty();
-		BigDecimal price = invoiceLine.getProduct().getSalePrice();
-		BigDecimal multi = qnty.multiply(price);
-		BigDecimal multipl = multi.multiply(calculateGst);
-
-		return multipl;
+		return (invoiceLine.getQty()).multiply(invoiceLine.getProduct().getSalePrice()).multiply(calculateGst);
 	}
-
+	
 	@Override
 	public Map<String, Object> fillProductInformation(Invoice invoice, InvoiceLine invoiceLine) throws AxelorException {
 
