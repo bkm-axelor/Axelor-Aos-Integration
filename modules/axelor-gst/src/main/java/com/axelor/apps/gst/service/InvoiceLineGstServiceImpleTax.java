@@ -7,7 +7,6 @@ import com.axelor.apps.account.db.repo.TaxLineRepository;
 import com.axelor.apps.account.service.AccountManagementServiceAccountImpl;
 import com.axelor.apps.base.db.Company;
 import com.axelor.apps.base.db.Product;
-import com.axelor.apps.base.service.tax.AccountManagementServiceImpl;
 import com.axelor.apps.base.service.tax.FiscalPositionService;
 import com.axelor.apps.base.service.tax.TaxService;
 import com.axelor.apps.supplychain.service.app.AppSupplychainService;
@@ -18,7 +17,7 @@ public class InvoiceLineGstServiceImpleTax extends AccountManagementServiceAccou
 
 	@Inject
 	TaxLineRepository taxLineRepository;
-	
+
 	@Inject
 	public InvoiceLineGstServiceImpleTax(FiscalPositionService fiscalPositionService, TaxService taxService) {
 		super(fiscalPositionService, taxService);

@@ -5,7 +5,6 @@ import java.util.Map;
 
 import com.axelor.apps.account.db.Invoice;
 import com.axelor.apps.account.db.InvoiceLine;
-import com.axelor.apps.account.db.TaxLine;
 import com.axelor.apps.account.db.repo.InvoiceLineRepository;
 import com.axelor.apps.account.db.repo.TaxLineRepository;
 import com.axelor.apps.account.service.AccountManagementAccountService;
@@ -47,7 +46,8 @@ public class InvoiceLineGstServiceImpl extends InvoiceLineProjectServiceImpl imp
 	}
 
 	public BigDecimal calculateCGst(InvoiceLine invoiceLine, BigDecimal calculateGst) {
-		return ((invoiceLine.getQty()).multiply(invoiceLine.getProduct().getSalePrice()).multiply(calculateGst)).divide(new BigDecimal(2.00));
+		return ((invoiceLine.getQty()).multiply(invoiceLine.getProduct().getSalePrice()).multiply(calculateGst))
+				.divide(new BigDecimal(2.00));
 	}
 
 	public BigDecimal calculateIGst(InvoiceLine invoiceLine, BigDecimal calculateGst) {
@@ -58,7 +58,8 @@ public class InvoiceLineGstServiceImpl extends InvoiceLineProjectServiceImpl imp
 	@Override
 	public Map<String, Object> fillProductInformation(Invoice invoice, InvoiceLine invoiceLine) throws AxelorException {
 
-		if (invoiceLine.getProduct().getGstRate() != null && Beans.get(AppSupplychainService.class).isApp("gst")) {
+		if (invoiceLine.getProduct().getGstRate() != null && Beans.get(AppSupplychainService.class).isApp("gst")
+				&& invoice.getAddress().getState() != null && invoice.getCompany().getAddress().getState() != null) {
 			Map<String, Object> fillProductInformation = super.fillProductInformation(invoice, invoiceLine);
 
 			BigDecimal calculateGst = calculateGst(invoiceLine);
@@ -82,17 +83,4 @@ public class InvoiceLineGstServiceImpl extends InvoiceLineProjectServiceImpl imp
 		}
 	}
 
-//	@Override
-//	public TaxLine getTaxLine(Invoice invoice, InvoiceLine invoiceLine, boolean isPurchase) throws AxelorException {
-//
-//		if (invoiceLine.getProduct().getGstRate().compareTo(BigDecimal.ZERO) > 0
-//				&& Beans.get(AppSupplychainService.class).isApp("gst")) {
-//
-//			return taxLineRepository.all().filter("self.tax.code = 'GS_T' and self.value = ?",
-//					invoiceLine.getProduct().getGstRate().divide(BigDecimal.valueOf(100))).fetchOne();
-//		} else {
-//
-//			return super.getTaxLine(invoice, invoiceLine, isPurchase);
-//		}
-//	}
 }
