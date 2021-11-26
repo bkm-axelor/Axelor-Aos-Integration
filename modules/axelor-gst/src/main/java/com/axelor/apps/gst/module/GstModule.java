@@ -18,12 +18,15 @@
 package com.axelor.apps.gst.module;
 
 import com.axelor.app.AxelorModule;
+import com.axelor.apps.account.service.AccountManagementServiceAccountImpl;
+import com.axelor.apps.base.service.tax.AccountManagementServiceImpl;
 import com.axelor.apps.businessproject.service.InvoiceLineProjectServiceImpl;
 import com.axelor.apps.cash.management.service.InvoiceServiceManagementImpl;
 import com.axelor.apps.gst.service.InvoiceGstService;
 import com.axelor.apps.gst.service.InvoiceGstServiceImpl;
 import com.axelor.apps.gst.service.InvoiceLineGstService;
 import com.axelor.apps.gst.service.InvoiceLineGstServiceImpl;
+import com.axelor.apps.gst.service.InvoiceLineGstServiceImpleTax;
 import com.axelor.apps.gst.service.ProductGstService;
 import com.axelor.apps.gst.service.ProductGstServiceImpl;
 
@@ -35,6 +38,7 @@ public class GstModule extends AxelorModule {
     bind(InvoiceGstService.class).to(InvoiceGstServiceImpl.class);
     bind(InvoiceServiceManagementImpl.class).to(InvoiceGstServiceImpl.class);
     bind(InvoiceLineProjectServiceImpl.class).to(InvoiceLineGstServiceImpl.class);
-    bind(InvoiceLineGstService.class).to(InvoiceLineGstServiceImpl.class);
+    bind(InvoiceLineGstService.class).to(InvoiceLineGstServiceImpl.class); 
+    bind(AccountManagementServiceAccountImpl.class).to(InvoiceLineGstServiceImpleTax.class);
   }
 }

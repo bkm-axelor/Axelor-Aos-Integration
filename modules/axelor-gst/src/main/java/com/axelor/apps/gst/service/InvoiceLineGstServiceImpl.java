@@ -1,12 +1,13 @@
 package com.axelor.apps.gst.service;
 
+import java.math.BigDecimal;
+import java.util.Map;
+
 import com.axelor.apps.account.db.Invoice;
 import com.axelor.apps.account.db.InvoiceLine;
-import com.axelor.apps.account.db.Tax;
 import com.axelor.apps.account.db.TaxLine;
 import com.axelor.apps.account.db.repo.InvoiceLineRepository;
 import com.axelor.apps.account.db.repo.TaxLineRepository;
-import com.axelor.apps.account.db.repo.TaxRepository;
 import com.axelor.apps.account.service.AccountManagementAccountService;
 import com.axelor.apps.account.service.AnalyticMoveLineService;
 import com.axelor.apps.account.service.app.AppAccountService;
@@ -17,21 +18,11 @@ import com.axelor.apps.base.service.app.AppBaseService;
 import com.axelor.apps.businessproject.service.InvoiceLineProjectServiceImpl;
 import com.axelor.apps.purchase.service.PurchaseProductService;
 import com.axelor.apps.supplychain.service.app.AppSupplychainService;
-import com.axelor.db.Query;
 import com.axelor.exception.AxelorException;
 import com.axelor.inject.Beans;
 import com.google.inject.Inject;
 
-import ch.qos.logback.core.recovery.ResilientSyslogOutputStream;
-
-import java.math.BigDecimal;
-import java.util.List;
-import java.util.Map;
-
 public class InvoiceLineGstServiceImpl extends InvoiceLineProjectServiceImpl implements InvoiceLineGstService {
-
-	@Inject
-	TaxRepository taxRepository;
 
 	@Inject
 	TaxLineRepository taxLineRepository;
@@ -60,9 +51,10 @@ public class InvoiceLineGstServiceImpl extends InvoiceLineProjectServiceImpl imp
 	}
 
 	public BigDecimal calculateIGst(InvoiceLine invoiceLine, BigDecimal calculateGst) {
+
 		return (invoiceLine.getQty()).multiply(invoiceLine.getProduct().getSalePrice()).multiply(calculateGst);
 	}
-	
+
 	@Override
 	public Map<String, Object> fillProductInformation(Invoice invoice, InvoiceLine invoiceLine) throws AxelorException {
 
@@ -90,18 +82,17 @@ public class InvoiceLineGstServiceImpl extends InvoiceLineProjectServiceImpl imp
 		}
 	}
 
-	@Override
-	public TaxLine getTaxLine(Invoice invoice, InvoiceLine invoiceLine, boolean isPurchase) throws AxelorException {
-
-		if (invoiceLine.getProduct().getGstRate().compareTo(BigDecimal.ZERO) > 0
-				&& Beans.get(AppSupplychainService.class).isApp("gst")) {
-		
-			TaxLine fetchOne = taxLineRepository.all().filter("self.tax.code = 'GS_T' and self.value = ?", invoiceLine.getProduct().getGstRate().divide(BigDecimal.valueOf(100))).fetchOne();
-			
-			return fetchOne;
-		} else {
-
-			return super.getTaxLine(invoice, invoiceLine, isPurchase);
-		}
-	}
+//	@Override
+//	public TaxLine getTaxLine(Invoice invoice, InvoiceLine invoiceLine, boolean isPurchase) throws AxelorException {
+//
+//		if (invoiceLine.getProduct().getGstRate().compareTo(BigDecimal.ZERO) > 0
+//				&& Beans.get(AppSupplychainService.class).isApp("gst")) {
+//
+//			return taxLineRepository.all().filter("self.tax.code = 'GS_T' and self.value = ?",
+//					invoiceLine.getProduct().getGstRate().divide(BigDecimal.valueOf(100))).fetchOne();
+//		} else {
+//
+//			return super.getTaxLine(invoice, invoiceLine, isPurchase);
+//		}
+//	}
 }
