@@ -19,8 +19,8 @@ package com.axelor.apps.gst.module;
 
 import com.axelor.app.AxelorModule;
 import com.axelor.apps.account.service.AccountManagementServiceAccountImpl;
-import com.axelor.apps.base.service.tax.AccountManagementServiceImpl;
 import com.axelor.apps.businessproject.service.InvoiceLineProjectServiceImpl;
+import com.axelor.apps.businessproject.service.SaleOrderInvoiceProjectServiceImpl;
 import com.axelor.apps.cash.management.service.InvoiceServiceManagementImpl;
 import com.axelor.apps.gst.service.InvoiceGstService;
 import com.axelor.apps.gst.service.InvoiceGstServiceImpl;
@@ -29,16 +29,18 @@ import com.axelor.apps.gst.service.InvoiceLineGstServiceImpl;
 import com.axelor.apps.gst.service.InvoiceLineGstServiceImpleTax;
 import com.axelor.apps.gst.service.ProductGstService;
 import com.axelor.apps.gst.service.ProductGstServiceImpl;
+import com.axelor.apps.gst.service.invoiceGstServiceImplSaleOrder;
 
 public class GstModule extends AxelorModule {
 
-  @Override
-  protected void configure() {
-    bind(ProductGstService.class).to(ProductGstServiceImpl.class);
-    bind(InvoiceGstService.class).to(InvoiceGstServiceImpl.class);
-    bind(InvoiceServiceManagementImpl.class).to(InvoiceGstServiceImpl.class);
-    bind(InvoiceLineProjectServiceImpl.class).to(InvoiceLineGstServiceImpl.class);
-    bind(InvoiceLineGstService.class).to(InvoiceLineGstServiceImpl.class); 
-    bind(AccountManagementServiceAccountImpl.class).to(InvoiceLineGstServiceImpleTax.class);
-  }
+	@Override
+	protected void configure() {
+		bind(ProductGstService.class).to(ProductGstServiceImpl.class);
+		bind(InvoiceGstService.class).to(InvoiceGstServiceImpl.class);
+		bind(InvoiceServiceManagementImpl.class).to(InvoiceGstServiceImpl.class);
+		bind(InvoiceLineProjectServiceImpl.class).to(InvoiceLineGstServiceImpl.class);
+		bind(InvoiceLineGstService.class).to(InvoiceLineGstServiceImpl.class);
+		bind(AccountManagementServiceAccountImpl.class).to(InvoiceLineGstServiceImpleTax.class);
+		bind(SaleOrderInvoiceProjectServiceImpl.class).to(invoiceGstServiceImplSaleOrder.class);
+	}
 }

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<object-views xmlns="http://axelor.com/xml/ns/object-views" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://axelor.com/xml/ns/object-views http://axelor.com/xml/ns/object-views/object-views_5.4.xsd">
+
+	<menuitem name="admin-root-organisation-State" parent="admin-root-organisation-territory" title="States" action="admin.root.organisation.state"
+		if-module="axelor-gst" if="__config__.app.isApp('gst')" />
+
+	<action-view name="admin.root.organisation.state" title="States" model="com.axelor.apps.base.db.State" if-module="axelor-gst">
+		<view type="grid" name="gst-state-grid" if="__config__.app.isApp('gst')" />
+		<view type="form" name="gst-state-form" if="__config__.app.isApp('gst')" />
+	</action-view>
+
+</object-views>
