@@ -29,7 +29,7 @@ public class InvoiceGstServiceImplPurchaseOrder extends PurchaseOrderInvoiceProj
 
 		Invoice createInvoice = super.generateInvoice(purchaseOrder);
 
-		if (!Beans.get(AppSupplychainService.class).isApp("gst")) {
+		if (!Beans.get(AppSupplychainService.class).isApp("gst") || createInvoice.getInvoiceLineList().isEmpty()) {
 			return createInvoice;
 		} else {
 

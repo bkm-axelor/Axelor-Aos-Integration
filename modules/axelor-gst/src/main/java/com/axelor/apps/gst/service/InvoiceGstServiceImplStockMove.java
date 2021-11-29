@@ -55,30 +55,11 @@ public class InvoiceGstServiceImplStockMove extends ProjectStockMoveInvoiceServi
 	      throws AxelorException {
 		Invoice createInvoice = super.createInvoice(stockMove, operationSelect, stockMoveLineListContext);
 
-		BigDecimal netIgst = new BigDecimal(0.00);
-		BigDecimal netCgst = new BigDecimal(0.00);
-
-		if (!Beans.get(AppSupplychainService.class).isApp("gst")) {
+		if (!Beans.get(AppSupplychainService.class).isApp("gst") || createInvoice.getInvoiceLineList().isEmpty()) {
 			return createInvoice;
 		} else {
 
-			if (!createInvoice.getInvoiceLineList().isEmpty()) {
-				for (InvoiceLine invoiceLine : createInvoice.getInvoiceLineList()) {
-					netIgst = netIgst.add(invoiceGstServiceImpl.getIgst(invoiceLine));
-					netCgst = netCgst.add(invoiceGstServiceImpl.getCgst(invoiceLine));
-				}
-				createInvoice.setNetCgst(netCgst);
-				createInvoice.setNetIgst(netIgst);
-				createInvoice.setNetSgst(netCgst);
-
-				return createInvoice;
-			} else {
-				createInvoice.setNetCgst(BigDecimal.ZERO);
-				createInvoice.setNetIgst(BigDecimal.ZERO);
-				createInvoice.setNetSgst(BigDecimal.ZERO);
-				return createInvoice;
-			}
-
+			return invoiceGstServiceImpl.compute(createInvoice);
 		}
 	}
 

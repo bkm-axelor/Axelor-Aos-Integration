@@ -45,7 +45,7 @@ public class InvoiceGstServiceImplSaleOrder extends SaleOrderInvoiceProjectServi
 			Map<Long, BigDecimal> qtyToInvoiceMap) throws AxelorException {
 		Invoice createInvoice = super.createInvoice(saleOrder, saleOrderLineList, qtyToInvoiceMap);
 
-		if (!Beans.get(AppSupplychainService.class).isApp("gst")) {
+		if (!Beans.get(AppSupplychainService.class).isApp("gst") || createInvoice.getInvoiceLineList().isEmpty()) {
 			return createInvoice;
 		} else {
 
