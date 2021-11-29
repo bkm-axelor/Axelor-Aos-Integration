@@ -21,7 +21,6 @@ public class InvoiceLineGstServiceImpleTax extends AccountManagementServiceAccou
 	@Inject
 	public InvoiceLineGstServiceImpleTax(FiscalPositionService fiscalPositionService, TaxService taxService) {
 		super(fiscalPositionService, taxService);
-		// TODO Auto-generated constructor stub
 	}
 
 	@Override

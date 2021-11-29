@@ -59,6 +59,9 @@ public class InvoiceGstServiceImpl extends InvoiceServiceManagementImpl implemen
 		Invoice computedInvoice = super.compute(invoice);
 		BigDecimal netIgst = new BigDecimal(0.00);
 		BigDecimal netCgst = new BigDecimal(0.00);
+//		computedInvoice.setNetCgst(BigDecimal.ZERO);
+//		computedInvoice.setNetIgst(BigDecimal.ZERO);
+//		computedInvoice.setNetSgst(BigDecimal.ZERO);
 
 		if (!Beans.get(AppSupplychainService.class).isApp("gst")) {
 			return computedInvoice;
