@@ -1,25 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<object-views xmlns="http://axelor.com/xml/ns/object-views" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://axelor.com/xml/ns/object-views http://axelor.com/xml/ns/object-views/object-views_5.4.xsd">
+<object-views xmlns="http://axelor.com/xml/ns/object-views"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://axelor.com/xml/ns/object-views http://axelor.com/xml/ns/object-views/object-views_5.4.xsd">
 
-	<form onLoad="action-group-supplychain-salebatch-onload" onNew="action-group-supplychain-salebatch-onnew" name="sale-batch-form" title="Sale Batch"
-		model="com.axelor.apps.sale.db.SaleBatch" width="large" extension="true" id="gst-sale-batch-form">
+  <form onLoad="action-group-supplychain-salebatch-onload"
+    onNew="action-group-supplychain-salebatch-onnew" name="sale-batch-form" title="Sale Batch"
+    model="com.axelor.apps.sale.db.SaleBatch" width="large" extension="true"
+    id="gst-sale-batch-form">
 
-		<extend target="//button[@name='invoicingBatchBtn']">
-			<insert position="after">
-				<panel if="__config__.app.isApp('gst')" if-module="axelor-gst">
-					<button name="saleOrderBatchBtn" title="Sale Order Generation" onClick="save,action-sale-batch-method-action-generate" colSpan="12" />
+    <extend target="//button[@name='invoicingBatchBtn']">
+      <insert position="after">
+        <panel if="__config__.app.isApp('gst')" if-module="axelor-gst">
+          <button name="saleOrderBatchBtn" title="Sale Order batch"
+            onClick="save,action-sale-batch-method-action-generate" colSpan="12"
+            showIf="actionSelect == 2"/>
 
-					<field name="partner" />
-				</panel>
-			</insert>
-		</extend>
+          <field name="partner" colSpan="12" showIf="actionSelect == 2"/>
+        </panel>
+      </insert>
+    </extend>
 
-	</form>
+  </form>
 
 
-	<action-method name="action-sale-batch-method-action-generate">
-		<call class="com.axelor.apps.gst.web.SaleOrderBatchController" method="actionSaleOrder" />
-	</action-method>
+  <action-method name="action-sale-batch-method-action-generate">
+    <call class="com.axelor.apps.gst.web.SaleOrderBatchController" method="actionSaleOrder"/>
+  </action-method>
 
 </object-views>

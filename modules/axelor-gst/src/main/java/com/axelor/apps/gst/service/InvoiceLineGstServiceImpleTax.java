@@ -1,7 +1,5 @@
 package com.axelor.apps.gst.service;
 
-import java.math.BigDecimal;
-
 import com.axelor.apps.account.db.Tax;
 import com.axelor.apps.account.db.repo.TaxLineRepository;
 import com.axelor.apps.account.service.AccountManagementServiceAccountImpl;
@@ -12,30 +10,36 @@ import com.axelor.apps.base.service.tax.TaxService;
 import com.axelor.apps.supplychain.service.app.AppSupplychainService;
 import com.axelor.inject.Beans;
 import com.google.inject.Inject;
+import java.math.BigDecimal;
 
 public class InvoiceLineGstServiceImpleTax extends AccountManagementServiceAccountImpl {
 
-	@Inject
-	TaxLineRepository taxLineRepository;
+  @Inject TaxLineRepository taxLineRepository;
 
-	@Inject
-	public InvoiceLineGstServiceImpleTax(FiscalPositionService fiscalPositionService, TaxService taxService) {
-		super(fiscalPositionService, taxService);
-	}
+  @Inject
+  public InvoiceLineGstServiceImpleTax(
+      FiscalPositionService fiscalPositionService, TaxService taxService) {
+    super(fiscalPositionService, taxService);
+  }
 
-	@Override
-	protected Tax getProductTax(Product product, Company company, boolean isPurchase, int configObject) {
+  @Override
+  protected Tax getProductTax(
+      Product product, Company company, boolean isPurchase, int configObject) {
 
-		if (product.getGstRate() != null && product.getGstRate().compareTo(BigDecimal.ZERO) > 0
-				&& Beans.get(AppSupplychainService.class).isApp("gst")) {
+    if (product.getGstRate() != null
+        && product.getGstRate().compareTo(BigDecimal.ZERO) > 0
+        && Beans.get(AppSupplychainService.class).isApp("gst")) {
 
-			return taxLineRepository.all().filter("self.tax.code = 'GS_T' and self.value = ?",
-					product.getGstRate().divide(BigDecimal.valueOf(100))).fetchOne().getTax();
+      return taxLineRepository
+          .all()
+          .filter(
+              "self.tax.code = 'GS_T' and self.value = ?",
+              product.getGstRate().divide(BigDecimal.valueOf(100)))
+          .fetchOne()
+          .getTax();
 
-		} else {
-			return super.getProductTax(product, company, isPurchase, configObject);
-		}
-
-	}
-
+    } else {
+      return super.getProductTax(product, company, isPurchase, configObject);
+    }
+  }
 }

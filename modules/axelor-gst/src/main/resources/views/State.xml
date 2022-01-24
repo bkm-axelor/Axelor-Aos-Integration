@@ -1,18 +1,19 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<object-views xmlns="http://axelor.com/xml/ns/object-views" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://axelor.com/xml/ns/object-views
+<object-views xmlns="http://axelor.com/xml/ns/object-views"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://axelor.com/xml/ns/object-views
   http://axelor.com/xml/ns/object-views/object-views_5.4.xsd">
 
-	<form model="com.axelor.apps.base.db.State" title="State" name="gst-state-form">
-		<panel>
-			<field name="name" title="State Name" />
-			<field name="country" title="Country Name" />
-		</panel>
-	</form>
+  <form model="com.axelor.apps.base.db.State" title="State" name="gst-state-form">
+    <panel>
+      <field name="name" title="State Name"/>
+      <field name="country" title="Country Name"/>
+    </panel>
+  </form>
 
-	<grid model="com.axelor.apps.base.db.State" title="States" name="gst-state-grid">
-		<field name="name" title="State Name" />
-		<field name="country" title="Country Name" />
-	</grid>
+  <grid model="com.axelor.apps.base.db.State" title="States" name="gst-state-grid">
+    <field name="name" title="State Name"/>
+    <field name="country" title="Country Name"/>
+  </grid>
 
 </object-views>

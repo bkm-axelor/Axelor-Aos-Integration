@@ -12,12 +12,13 @@ import com.axelor.rpc.ActionResponse;
 
 public class SaleOrderBatchController extends SaleBatchController {
 
-	public void actionSaleOrder(ActionRequest request, ActionResponse response) throws AxelorException {
+  public void actionSaleOrder(ActionRequest request, ActionResponse response)
+      throws AxelorException {
 
-		SaleBatch saleBatch = request.getContext().asType(SaleBatch.class);
-		saleBatch = Beans.get(SaleBatchRepository.class).find(saleBatch.getId());
-		Batch batch = Beans.get(SaleOrderReport.class).run(saleBatch);
-		response.setFlash(batch.getComments());
-		response.setReload(true);
-	}
+    SaleBatch saleBatch = request.getContext().asType(SaleBatch.class);
+    saleBatch = Beans.get(SaleBatchRepository.class).find(saleBatch.getId());
+    Batch batch = Beans.get(SaleOrderReport.class).run(saleBatch);
+    response.setFlash(batch.getComments());
+    response.setReload(true);
+  }
 }

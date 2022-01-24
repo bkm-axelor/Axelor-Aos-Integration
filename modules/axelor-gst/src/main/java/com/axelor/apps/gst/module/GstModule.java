@@ -26,28 +26,27 @@ import com.axelor.apps.businessproject.service.SaleOrderInvoiceProjectServiceImp
 import com.axelor.apps.cash.management.service.InvoiceServiceManagementImpl;
 import com.axelor.apps.gst.service.InvoiceGstService;
 import com.axelor.apps.gst.service.InvoiceGstServiceImpl;
+import com.axelor.apps.gst.service.InvoiceGstServiceImplPurchaseOrder;
+import com.axelor.apps.gst.service.InvoiceGstServiceImplSaleOrder;
+import com.axelor.apps.gst.service.InvoiceGstServiceImplStockMove;
 import com.axelor.apps.gst.service.InvoiceLineGstService;
 import com.axelor.apps.gst.service.InvoiceLineGstServiceImpl;
 import com.axelor.apps.gst.service.InvoiceLineGstServiceImpleTax;
 import com.axelor.apps.gst.service.ProductGstService;
 import com.axelor.apps.gst.service.ProductGstServiceImpl;
-import com.axelor.apps.supplychain.service.StockMoveInvoiceServiceImpl;
-import com.axelor.apps.gst.service.InvoiceGstServiceImplPurchaseOrder;
-import com.axelor.apps.gst.service.InvoiceGstServiceImplSaleOrder;
-import com.axelor.apps.gst.service.InvoiceGstServiceImplStockMove;
 
 public class GstModule extends AxelorModule {
 
-	@Override
-	protected void configure() {
-		bind(ProductGstService.class).to(ProductGstServiceImpl.class);
-		bind(InvoiceGstService.class).to(InvoiceGstServiceImpl.class);
-		bind(InvoiceServiceManagementImpl.class).to(InvoiceGstServiceImpl.class);
-		bind(InvoiceLineProjectServiceImpl.class).to(InvoiceLineGstServiceImpl.class);
-		bind(InvoiceLineGstService.class).to(InvoiceLineGstServiceImpl.class);
-		bind(AccountManagementServiceAccountImpl.class).to(InvoiceLineGstServiceImpleTax.class);
-		bind(SaleOrderInvoiceProjectServiceImpl.class).to(InvoiceGstServiceImplSaleOrder.class);
-		bind(PurchaseOrderInvoiceProjectServiceImpl.class).to(InvoiceGstServiceImplPurchaseOrder.class);
-		bind(ProjectStockMoveInvoiceServiceImpl.class).to(InvoiceGstServiceImplStockMove.class);
-	}
+  @Override
+  protected void configure() {
+    bind(ProductGstService.class).to(ProductGstServiceImpl.class);
+    bind(InvoiceGstService.class).to(InvoiceGstServiceImpl.class);
+    bind(InvoiceServiceManagementImpl.class).to(InvoiceGstServiceImpl.class);
+    bind(InvoiceLineProjectServiceImpl.class).to(InvoiceLineGstServiceImpl.class);
+    bind(InvoiceLineGstService.class).to(InvoiceLineGstServiceImpl.class);
+    bind(AccountManagementServiceAccountImpl.class).to(InvoiceLineGstServiceImpleTax.class);
+    bind(SaleOrderInvoiceProjectServiceImpl.class).to(InvoiceGstServiceImplSaleOrder.class);
+    bind(PurchaseOrderInvoiceProjectServiceImpl.class).to(InvoiceGstServiceImplPurchaseOrder.class);
+    bind(ProjectStockMoveInvoiceServiceImpl.class).to(InvoiceGstServiceImplStockMove.class);
+  }
 }

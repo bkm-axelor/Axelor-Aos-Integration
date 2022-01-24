@@ -1,9 +1,5 @@
 package com.axelor.apps.gst.service;
 
-import java.math.BigDecimal;
-import java.util.List;
-import java.util.Map;
-
 import com.axelor.apps.account.db.Invoice;
 import com.axelor.apps.account.db.InvoiceLine;
 import com.axelor.apps.account.db.repo.InvoiceRepository;
@@ -17,64 +13,84 @@ import com.axelor.apps.sale.db.repo.SaleOrderRepository;
 import com.axelor.apps.sale.service.saleorder.SaleOrderLineService;
 import com.axelor.apps.sale.service.saleorder.SaleOrderWorkflowServiceImpl;
 import com.axelor.apps.stock.db.repo.StockMoveRepository;
-import com.axelor.apps.supplychain.service.SaleOrderInvoiceServiceImpl;
 import com.axelor.apps.supplychain.service.app.AppSupplychainService;
 import com.axelor.exception.AxelorException;
 import com.axelor.inject.Beans;
 import com.google.inject.Inject;
+import java.math.BigDecimal;
+import java.util.List;
+import java.util.Map;
 
 public class invoiceGstServiceImplSaleOrder extends SaleOrderInvoiceProjectServiceImpl {
 
-	@Inject
-	public invoiceGstServiceImplSaleOrder(AppBaseService appBaseService, AppSupplychainService appSupplychainService,
-			SaleOrderRepository saleOrderRepo, InvoiceRepository invoiceRepo, InvoiceService invoiceService,
-			AppBusinessProjectService appBusinessProjectService, StockMoveRepository stockMoveRepository,
-			SaleOrderLineService saleOrderLineService, SaleOrderWorkflowServiceImpl saleOrderWorkflowServiceImpl) {
-		super(appBaseService, appSupplychainService, saleOrderRepo, invoiceRepo, invoiceService,
-				appBusinessProjectService, stockMoveRepository, saleOrderLineService, saleOrderWorkflowServiceImpl);
-		// TODO Auto-generated constructor stub
-	}
+  @Inject
+  public invoiceGstServiceImplSaleOrder(
+      AppBaseService appBaseService,
+      AppSupplychainService appSupplychainService,
+      SaleOrderRepository saleOrderRepo,
+      InvoiceRepository invoiceRepo,
+      InvoiceService invoiceService,
+      AppBusinessProjectService appBusinessProjectService,
+      StockMoveRepository stockMoveRepository,
+      SaleOrderLineService saleOrderLineService,
+      SaleOrderWorkflowServiceImpl saleOrderWorkflowServiceImpl) {
+    super(
+        appBaseService,
+        appSupplychainService,
+        saleOrderRepo,
+        invoiceRepo,
+        invoiceService,
+        appBusinessProjectService,
+        stockMoveRepository,
+        saleOrderLineService,
+        saleOrderWorkflowServiceImpl);
+    // TODO Auto-generated constructor stub
+  }
 
-	@Inject
-	InvoiceLineGstServiceImpl invoiceLineGstServiceImpl;
+  @Inject InvoiceLineGstServiceImpl invoiceLineGstServiceImpl;
 
-	@Inject
-	InvoiceGstServiceImpl invoiceGstServiceImpl;
+  @Inject InvoiceGstServiceImpl invoiceGstServiceImpl;
 
-	@Override
-	public Invoice createInvoice(SaleOrder saleOrder, List<SaleOrderLine> saleOrderLineList,
-			Map<Long, BigDecimal> qtyToInvoiceMap) throws AxelorException {
-		Invoice createInvoice = super.createInvoice(saleOrder, saleOrderLineList, qtyToInvoiceMap);
+  @Override
+  public Invoice createInvoice(
+      SaleOrder saleOrder,
+      List<SaleOrderLine> saleOrderLineList,
+      Map<Long, BigDecimal> qtyToInvoiceMap)
+      throws AxelorException {
+    Invoice createInvoice = super.createInvoice(saleOrder, saleOrderLineList, qtyToInvoiceMap);
 
-		if (!Beans.get(AppSupplychainService.class).isApp("gst")) {
-			return createInvoice;
-		} else {
+    if (!Beans.get(AppSupplychainService.class).isApp("gst")) {
+      return createInvoice;
+    } else {
 
-			return invoiceGstServiceImpl.compute(createInvoice);
-		}
-	}
+      return invoiceGstServiceImpl.compute(createInvoice);
+    }
+  }
 
-	@Override
-	public List<InvoiceLine> createInvoiceLines(Invoice invoice, List<SaleOrderLine> saleOrderLineList,
-			Map<Long, BigDecimal> qtyToInvoiceMap) throws AxelorException {
-		// TODO Auto-generated method stub
-		List<InvoiceLine> createInvoiceLines = super.createInvoiceLines(invoice, saleOrderLineList, qtyToInvoiceMap);
+  @Override
+  public List<InvoiceLine> createInvoiceLines(
+      Invoice invoice, List<SaleOrderLine> saleOrderLineList, Map<Long, BigDecimal> qtyToInvoiceMap)
+      throws AxelorException {
+    // TODO Auto-generated method stub
+    List<InvoiceLine> createInvoiceLines =
+        super.createInvoiceLines(invoice, saleOrderLineList, qtyToInvoiceMap);
 
-		for (InvoiceLine invoiceLine : createInvoiceLines) {
-			BigDecimal calculateGst = invoiceLineGstServiceImpl.calculateGst(invoiceLine);
-			BigDecimal calculateCGst = invoiceLineGstServiceImpl.calculateCGst(invoiceLine, calculateGst);
-			BigDecimal calculateIGst = invoiceLineGstServiceImpl.calculateIGst(invoiceLine, calculateGst);
-			invoiceLine.setCgst(calculateCGst);
-			invoiceLine.setIgst(calculateIGst);
-		}
+    for (InvoiceLine invoiceLine : createInvoiceLines) {
+      BigDecimal calculateGst = invoiceLineGstServiceImpl.calculateGst(invoiceLine);
+      BigDecimal calculateCGst = invoiceLineGstServiceImpl.calculateCGst(invoiceLine, calculateGst);
+      BigDecimal calculateIGst = invoiceLineGstServiceImpl.calculateIGst(invoiceLine, calculateGst);
+      invoiceLine.setCgst(calculateCGst);
+      invoiceLine.setIgst(calculateIGst);
+    }
 
-		return createInvoiceLines;
-	}
+    return createInvoiceLines;
+  }
 
-//	@Override
-//	public Invoice createInvoice(SaleOrder saleOrder, List<SaleOrderLine> saleOrderLineList) throws AxelorException {
-//
-//		
-//	}
+  //	@Override
+  //	public Invoice createInvoice(SaleOrder saleOrder, List<SaleOrderLine> saleOrderLineList) throws
+  // AxelorException {
+  //
+  //
+  //	}
 
 }
